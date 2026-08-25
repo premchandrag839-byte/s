@@ -1,0 +1,8 @@
+# Update the domain below to your production URL
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /scroll-test
+
+Sitemap: https://www.akashintercollege.in/sitemap.xml
