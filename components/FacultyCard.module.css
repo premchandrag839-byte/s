@@ -1,0 +1,141 @@
+/* Glowing animated border card inspired by uiverse.io tasty-frog-49 */
+
+/* Wrapper for card + capsule (keeps overall width consistent and centers capsule) */
+.item {
+  width: 190px; /* same as card width */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px; /* space between card and capsule */
+}
+
+.card {
+  position: relative;
+  width: 190px;
+  height: 254px;
+  background-color: #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 12px;
+  gap: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  overflow: visible;
+  border: none;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  left: -5px;
+  margin: auto;
+  width: 200px;
+  height: 264px;
+  border-radius: 10px;
+  background: linear-gradient(-45deg, #e81cff 0%, #40c9ff 100%);
+  z-index: -10;
+  pointer-events: none;
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card::after {
+  content: "";
+  z-index: -1;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(-45deg, #fc00ff 0%, #00dbde 100%);
+  transform: translate3d(0, 0, 0) scale(0.95);
+  filter: blur(20px);
+  transition: filter 0.3s ease;
+}
+
+.card:hover::after {
+  filter: blur(30px);
+}
+
+.card:hover::before {
+  transform: rotate(-90deg) scaleX(1.34) scaleY(0.77);
+}
+
+/* Media inside the card */
+.media {
+  position: relative;
+  flex: 1 1 auto;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Name styling */
+.heading {
+  position: relative;
+  z-index: 2;
+  font-size: 20px;
+  text-transform: capitalize;
+  font-weight: 700;
+  color: #000;
+}
+
+/* Capsule button styles (uiverse.io Spacious74) */
+.container {
+  position: relative;
+  width: 86%; /* slightly narrower than the card */
+  padding: 3px; /* gradient border thickness */
+  background: linear-gradient(90deg, #03a9f4, #f441a5);
+  border-radius: 0.9em;
+  transition: all 0.4s ease;
+  border: none;
+  box-shadow: 2px 2px 3px #000000b4;
+  cursor: pointer;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  border-radius: 0.9em;
+  z-index: -10;
+  filter: blur(0);
+  transition: filter 0.4s ease;
+}
+
+.container:hover::before {
+  background: linear-gradient(90deg, #03a9f4, #f441a5);
+  filter: blur(1.2em);
+}
+
+.container:active::before {
+  filter: blur(0.2em);
+}
+
+.buttonInner {
+  width: 100%;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 0.8em;
+  padding: 0.6em 0.8em;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  text-align: center;
+  /* Keep long names inside the capsule */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; /* up to 2 lines */
+  line-clamp: 2; /* standard property for linters */
+  overflow: hidden;
+  word-break: break-word;
+}

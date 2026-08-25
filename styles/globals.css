@@ -1,0 +1,317 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global font family (single line to change/remove later) */
+:root {
+  --app-font-family: "Math Sans Italic", "Inter", "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Helvetica Neue", Helvetica, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  /* Hero color tokens (replace these with your exact codes) */
+  --hero-title-from: #3559d3; /* start color */
+  --hero-title-to: #43d3a6;   /* end color */
+  --hero-tagline: #c9d4e9;    /* tagline text color (fallback) */
+  --hero-tagline-from: #0ea5e9; /* Sky Blue */
+  --hero-tagline-to: #7dd3fc;   /* lighter Sky */
+}
+
+/* Apply site-wide without touching colors/spacing */
+:where(html, body, h1, h2, h3, h4, h5, h6, p, span, a, button, input, textarea, select, label, small, strong, em, blockquote, li, dt, dd, code, pre, th, td) {
+  font-family: var(--app-font-family);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Smoothen transforms and hover effects globally without altering design */
+* { 
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Elevate navbar on scroll (shadow added via small JS in _app route transition) */
+.scrolled-nav {
+  box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+}
+
+/* Placeholder image helper */
+.placeholder-bg {
+  @apply bg-gradient-to-br from-blue-100 via-blue-50 to-white;
+}
+
+.video-background {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the video covers the area without distortion */
+  z-index: -1; /* Behind the content */
+}
+
+.content {
+  position: absolute; /* Change to absolute for top-left positioning */
+  top: 10%; /* Position near the top */
+  left: 5%; /* Position near the left */
+  z-index: 1;
+  text-align: left; /* Align text to the left */
+  color: red; /* Change text color to red */
+  animation: fadeIn 2s ease-in-out; /* Retain fade-in animation */
+}
+
+/* Achievements animations */
+.animate-fade-in { animation: fadeIn 300ms ease-out both; }
+.animate-card-flip { animation: cardFlip 450ms ease-out both; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes cardFlip { from { transform: rotateY(-90deg); opacity: 0; } to { transform: rotateY(0deg); opacity: 1; } }
+
+/* Hero title: bold italic white with subtle black glow */
+.hero-title {
+  color: #ffffff;
+  text-shadow: none; /* remove drop shadow behind title */
+  position: relative;
+  display: inline-block;
+  white-space: pre; /* keep spaces in title */
+  animation: none; /* override global h1 animation */
+  /* Use CPU text rendering for crisp glyph edges (GPU text can cause artifacts) */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  /* The content uses math-italic letters already; avoid double-italic rendering */
+  font-style: normal;
+  letter-spacing: 0.02em;
+  /* Avoid clipping the italic glyph overhang on the last letter */
+  overflow: visible;
+  padding-inline-end: 0.22em;
+}
+
+/* Gradient color for the hero title */
+.hero-title-gradient {
+  background: linear-gradient(90deg, var(--hero-title-from), var(--hero-title-to));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent; /* ensure consistent AA on WebKit/Chromium */
+  /* Slight stroke to fill edge pixels on corners */
+  -webkit-text-stroke: 0.45px rgba(0, 0, 0, 0.10);
+  /* Micro shadow to catch 1px gaps without visible glow */
+  text-shadow: 0 0 0.3px rgba(0, 0, 0, 0.12);
+}
+
+/* Per-letter typewriter fly-in */
+.hero-type-letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(6px) translateZ(0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  animation: heroLetterIn 420ms ease-out forwards;
+}
+
+/* Circular logo in hero above the title */
+.college-logo {
+  display: block;
+  width: clamp(72px, 22vw, 120px);
+  height: clamp(72px, 22vw, 120px);
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 0.75rem; /* center horizontally + bottom spacing */
+}
+
+/* Isolate layers to avoid cross-paint between text and Vanta canvas */
+.vanta-layer {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  contain: strict; /* layout + paint + size + style isolation */
+}
+
+.hero-content {
+  will-change: transform;
+  transform: translateZ(0);
+  contain: layout paint; /* isolate paints from background canvas */
+}
+
+/* Tagline: black gradient + subtle glow */
+.hero-tagline {
+  background: linear-gradient(90deg, #000000 0%, #3b3b3b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  /* Subtle dark glow to enhance readability over light backgrounds */
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.35), 0 0 14px rgba(0, 0, 0, 0.25);
+  /* Fill edge pixels to avoid hairline gaps */
+  -webkit-text-stroke: 0.35px rgba(0, 0, 0, 0.25);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@keyframes heroLetterIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Fade up helper for CTA */
+.animate-fade-up { animation: fadeUp 500ms ease-out both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Disable CTA animation in hero to prevent any micro-stutter without touching markup */
+.hero-content .animate-fade-up { animation: none !important; transform: none !important; }
+
+/* Accessibility: reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .hero-type-letter { animation: none !important; opacity: 1 !important; transform: none !important; }
+}
+
+/* immersive cursor rule removed */
+
+.middle-top {
+  position: absolute;
+  bottom: 10%; /* Position near the bottom */
+  right: 5%; /* Position near the right */
+  transform: none; /* Remove centering transform */
+  color: blue; /* Set text color to blue */
+  font-size: 4rem;
+  text-align: right; /* Align text to the right */
+  animation: fadeIn 2s ease-in-out; /* Retain fade-in animation */
+}
+
+h1 {
+  font-size: 4rem;
+  animation: slideIn 1.5s ease-in-out; /* Slide-in animation for heading */
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  animation: bounceIn 2s ease-in-out; /* Bounce-in animation for button */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ---- Experiment-only demo sections (safe to remove) ---- */
+.section {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: white;
+}
+.section:nth-child(odd) {
+  background: #1e293b;
+}
+.section:nth-child(even) {
+  background: #334155;
+}
+
+/* ---- iPhone unlock animation (experiment, safe to remove) ---- */
+@keyframes iphoneUnlock {
+  0% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.iphone-unlock-animate {
+  animation: iphoneUnlock 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* Navbar link: Blue glow pulse + floating hover */
+.nav-glow {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.625rem; /* py-1.5 px-2.5 */
+  border-radius: 0.5rem; /* rounded-lg */
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, color 0.35s ease, border-color 0.35s ease;
+  will-change: transform;
+}
+
+.nav-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(59, 130, 246, 0); /* blue-500 */
+  pointer-events: none;
+  transition: border-color 0.35s ease, opacity 0.35s ease;
+  opacity: 0;
+}
+
+.nav-glow::after {
+  content: "";
+  position: absolute;
+  inset: -2px; /* allow glow to radiate */
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.nav-glow:hover { transform: translateY(-2px); }
+.nav-glow:hover::before { opacity: 1; border-color: rgba(59, 130, 246, 0.7); }
+.nav-glow:hover::after { opacity: 1; animation: navGlowPulse 1.4s ease-in-out infinite; }
+
+@keyframes navGlowPulse {
+  0% {
+    box-shadow:
+      0 0 0 0 rgba(59, 130, 246, 0.45), /* ring */
+      0 0 14px rgba(56, 189, 248, 0.35); /* outer soft */
+  }
+  50% {
+    box-shadow:
+      0 0 0 6px rgba(59, 130, 246, 0),
+      0 0 26px rgba(56, 189, 248, 0.55);
+  }
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(59, 130, 246, 0.45),
+      0 0 14px rgba(56, 189, 248, 0.35);
+  }
+}
